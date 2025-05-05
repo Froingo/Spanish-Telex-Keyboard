@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spanish Telex Keyboard</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: sans-serif;
+      background-color: #fff;
+      color: #222;
+    }
+
+    .box {
+      max-width: 600px;
+      margin: 0 auto;
+      border: 2px solid #c21807;
+      border-radius: 8px;
+      padding: 20px;
+      background-color: #fff;
+    }
+
+    h2 {
+      text-align: center;
+      color: #c21807;
+      margin-bottom: 10px;
+    }
+
+    .intro {
+      text-align: center;
+      font-size: 1em;
+      color: #444;
+      margin-bottom: 20px;
+      background-color: #fffde7;
+      padding: 10px;
+      border-left: 4px solid #f9a825;
+      border-radius: 6px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 140px;
+      font-size: 1.1em;
+      padding: 10px;
+      border: 2px solid #f9a825;
+      border-radius: 6px;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    textarea:focus {
+      border-color: #f9a825;
+      outline: none;
+      box-shadow: 0 0 5px rgba(249, 168, 37, 0.5);
+    }
+
+    textarea.focused {
+      border-color: #f9a825;
+    }
+
+    .rules {
+      margin-top: 15px;
+      background-color: #fffde7;
+      border-left: 4px solid #f9a825;
+      padding: 10px;
+      font-size: 0.95em;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .rules .column {
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .rules code {
+      background: #fcefc7;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+
+    .rules ul {
+      margin: 5px 0 0 15px;
+      padding: 0;
+    }
+
+    .rules li {
+      margin-bottom: 4px;
+    }
+
+    .try {
+      font-size: 1em;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #fcefc7;
+      border-left: 4px solid #f9a825;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h2>Spanish Telex Keyboard</h2>
+
+    <div class="intro">
+      Welcome to the easiest Spanish keyboard ever!<br>
+      Just type simple combos — it's that easy.
+    </div>
+
+    <textarea id="textBox" placeholder="Type using Telex rules (e.g., 'aa' → 'á')"></textarea>
+
+    <div class="rules">
+      <div class="column">
+        <strong>Telex Rules:</strong>
+        <ul>
+          <li><code>aa</code> → á</li>
+          <li><code>ee</code> → é</li>
+          <li><code>ii</code> → í</li>
+          <li><code>oo</code> → ó</li>		  
+        </ul>
+      </div>
+      <div class="column">
+        <ul>   
+          <li><code>uu</code> → ú</li>
+          <li><code>ww</code> → ü</li>
+          <li><code>nn</code> → ñ</li>		  
+          <li><code>??</code> → ¿</li>
+          <li><code>!!</code> → ¡</li>
+       
+        </ul>
+      </div>
+    </div>
+
+    <div class="try">
+      <strong>Example:</strong><br>
+      Try: ¿Te gustaría tener un pingüino? ¡Qué bueno!</strong><br>
+    
+    </div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("textBox");
+
+    const telexMap = {
+      "aa": "á",
+      "ee": "é",
+      "ii": "í",
+      "oo": "ó",
+      "uu": "ú",
+      "ww": "ü",
+      "??": "¿",
+      "!!": "¡",
+      "nn": "ñ"
+    };
+
+    textBox.addEventListener("input", () => {
+      const cursorPos = textBox.selectionStart;
+      let text = textBox.value;
+
+      for (const [pattern, replacement] of Object.entries(telexMap)) {
+        const index = text.lastIndexOf(pattern, cursorPos - 1);
+        if (index !== -1 && cursorPos - index === 2) {
+          text = text.slice(0, index) + replacement + text.slice(index + 2);
+          textBox.value = text;
+          textBox.selectionStart = textBox.selectionEnd = index + 1;
+          break;
+        }
+      }
+    });
+
+    // Keep the yellow border after clicking
+    textBox.addEventListener("focus", function() {
+      textBox.classList.add("focused");
+    });
+
+    textBox.addEventListener("blur", function() {
+      if (!textBox.value) {
+        textBox.classList.remove("focused");
+      }
+    });
+  </script>
+
+</body>
+</html>
